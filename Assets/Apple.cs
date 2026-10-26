@@ -1,20 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Apple : MonoBehaviour
 {
     public static float bottomY = -20f;
 
+    ApplePicker applePicker;
+
+    void Start()
+    {
+        applePicker = Camera.main.GetComponent<ApplePicker>();
+        if (applePicker != null)
+        {
+            applePicker.RegisterApple(gameObject);
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (applePicker != null)
+        {
+            applePicker.UnregisterApple(gameObject);
+        }
+    }
+
     void Update()
     {
-        if ( transform.position.y < bottomY ) {
-            Destroy ( this.gameObject );
+        if (transform.position.y < bottomY)
+        {
+            Destroy(gameObject);
 
-            // Get a reference to the ApplePicker component of Main Camera
-            ApplePicker apScript = Camera.main.GetComponent<ApplePicker>();
-            // Call the public AppleMissed() method of apScript
-            apScript.AppleMissed();
+            if (applePicker != null)
+            {
+                applePicker.AppleMissed();
+            }
         }
     }
 }

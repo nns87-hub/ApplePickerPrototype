@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,16 +5,30 @@ public class ScoreCounter : MonoBehaviour
 {
     [Header("Dynamic")]
     public int score = 0;
-    private Text uiText;
-    // Start is called before the first frame update
+    Text uiText;
+    int displayedScore = int.MinValue;
+
     void Start()
     {
-       uiText = GetComponent<Text>(); 
+        uiText = GetComponent<Text>();
+        RefreshText();
     }
 
-    // Update is called once per frame
     void Update()
     {
-       uiText.text = score.ToString("#,0");
+        if (score == displayedScore)
+        {
+            return;
+        }
+        RefreshText();
+    }
+
+    void RefreshText()
+    {
+        displayedScore = score;
+        if (uiText != null)
+        {
+            uiText.text = score.ToString("#,0");
+        }
     }
 }
